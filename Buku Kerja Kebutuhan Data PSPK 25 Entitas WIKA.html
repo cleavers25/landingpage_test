@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buku Kerja Kebutuhan Data PSPK — 25 Entitas WIKA</title>
+<style>
+:root{
+  --hijau:#1a7a4c; --hijau-tua:#0e5c38; --hijau-muda:#e8f5ee; --hijau-garis:#c8e6d4;
+  --abu:#5b6b62; --abu-muda:#f5f8f6; --teks:#16241d; --kuning:#fff6e0; --kuning-garis:#e8c97a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fbfdfc;color:var(--teks);font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-size:14px;line-height:1.5}
+.wrap{max-width:1560px;width:100%;margin:0 auto;padding:18px 16px 60px}
+header.top{border-bottom:3px solid var(--hijau);padding-bottom:14px;margin-bottom:16px}
+.brand{font-size:11px;letter-spacing:.14em;color:var(--hijau);font-weight:700;text-transform:uppercase}
+h1{margin:6px 0 4px;font-size:24px;color:var(--hijau-tua);line-height:1.2}
+.sub{color:var(--abu);font-size:13px;margin:0}
+.chips{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--hijau-muda);border:1px solid var(--hijau-garis);color:var(--hijau-tua);border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:600}
+.chip.warn{background:var(--kuning);border-color:var(--kuning-garis);color:#7a5a12}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 10px}
+button{font:inherit;border-radius:6px;padding:8px 13px;cursor:pointer;border:1px solid var(--hijau);background:var(--hijau);color:#fff;font-weight:600}
+button.sec{background:#fff;color:var(--hijau-tua)}
+button.ghost{background:#fff;color:var(--abu);border-color:#d6e0da}
+button:hover{filter:brightness(.94)}
+input[type=search]{font:inherit;padding:8px 10px;border:1px solid #d6e0da;border-radius:6px;min-width:220px}
+.tabs{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--hijau-garis)}
+.tab{font-size:12px;padding:6px 10px;border:1px solid #d6e0da;background:#fff;border-radius:6px;cursor:pointer;color:var(--abu);white-space:nowrap}
+.tab:hover{border-color:var(--hijau);color:var(--hijau-tua)}
+.tab.on{background:var(--hijau);border-color:var(--hijau);color:#fff;font-weight:700}
+.tab .pg{display:inline-block;margin-left:6px;font-size:10.5px;opacity:.85}
+.card{background:#fff;border:1px solid var(--hijau-garis);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--hijau-tua)}
+.idgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:12px}
+.idbox{background:var(--abu-muda);border:1px solid #e2eae5;border-radius:8px;padding:8px 10px}
+.idbox .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--abu)}
+.idbox .v{font-size:13.5px;font-weight:700;color:var(--hijau-tua)}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff}
+table.dt th{background:var(--hijau);color:#fff;text-align:left;padding:7px 8px;font-size:11px;letter-spacing:.03em;text-transform:uppercase;position:sticky;top:0;z-index:2}
+table.dt td{border:1px solid #e2eae5;padding:6px 8px;vertical-align:top}
+table.dt tr:nth-child(even) td{background:#fafcfa}
+tr.ex td{background:var(--kuning)!important;font-style:italic}
+tr.ex td.tag{font-weight:800;font-style:normal;color:#7a5a12;font-size:10.5px;letter-spacing:.06em}
+td.grp{font-weight:700;color:var(--hijau-tua);white-space:nowrap;font-size:11.5px}
+td.idc{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--abu);white-space:nowrap}
+td.ed{background:#f2fbf6!important;min-width:120px}
+td.ed:focus{outline:2px solid var(--hijau);outline-offset:-2px;background:#eaf8f1!important}
+td.stat{min-width:96px}
+.badge{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--hijau-garis);color:var(--hijau-tua);background:var(--hijau-muda);font-weight:700;font-style:normal}
+.hint{background:#fff;border:1px dashed var(--hijau);border-radius:10px;padding:14px 16px;margin-top:14px}
+.hint h3{margin:0 0 8px;color:var(--hijau-tua);font-size:15px}
+.hint ol{margin:0;padding-left:22px}
+.hint li{margin-bottom:5px}
+.hint .ent{margin-top:12px;padding:10px 12px;background:var(--hijau-muda);border-radius:8px;font-size:12.5px}
+.hint .ent b{color:var(--hijau-tua)}
+.bar{height:7px;background:#e6efe9;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--hijau);width:0}
+.legend{font-size:11.5px;color:var(--abu);margin-top:8px}
+.err{background:#fdecea;border:1px solid #e5b4ae;color:#8a2b1d;padding:14px 16px;border-radius:10px;white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+.foot{margin-top:22px;font-size:11.5px;color:var(--abu);border-top:1px solid var(--hijau-garis);padding-top:12px}
+table.idx{width:100%;border-collapse:collapse;font-size:12.5px}
+table.idx th{background:var(--hijau);color:#fff;padding:7px 8px;text-align:left;font-size:11px;text-transform:uppercase}
+table.idx td{border:1px solid #e2eae5;padding:6px 8px}
+table.idx tr:nth-child(even) td{background:#fafcfa}
+table.idx td.num{text-align:right;font-variant-numeric:tabular-nums}
+.gk{display:inline-block;background:var(--hijau-muda);border:1px solid var(--hijau-garis);border-radius:5px;padding:1px 7px;font-size:11px;font-weight:700;color:var(--hijau-tua);margin:0 4px 4px 0}
+@media print{.toolbar,.tabs,input[type=search]{display:none}table.dt th{position:static}.card,.hint{break-inside:avoid}}
+</style>
+<style id="prova-layout-fix">
+.page,.slide,.sheet,.paper,[data-page]{width:100%!important;max-width:1280px!important;height:auto!important;min-height:0!important;overflow:visible!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important}
+.fit-wrap{width:100%;max-height:70vh;overflow:auto;-webkit-overflow-scrolling:touch}
+.fit-wrap>table{min-width:680px}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{padding:12px!important}
+@media (max-width:640px){
+[class*="grid"],[style*="grid-template-columns"]{grid-template-columns:1fr!important}
+.row,.flex,[style*="display:flex"],[style*="display: flex"]{flex-wrap:wrap!important}
+[style*="position:absolute"],[style*="position: absolute"]{position:static!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important}
+.page,.slide,.sheet,.paper,[data-page]{padding-left:14px!important;padding-right:14px!important;padding-top:16px!important;padding-bottom:16px!important}
+.page>*:first-child,.slide>*:first-child,.sheet>*:first-child,.paper>*:first-child,[data-page]>*:first-child,.page section:first-child{margin-top:0!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand">Proxsis Sustainability Research · Buku Kerja Internal</div>
+  <h1>Kebutuhan Data PSPK per Entitas — 25 Worksheet</h1>
+  <p class="sub" id="subttl">PT Wijaya Karya (Persero) Tbk dan seluruh entitas dalam lingkup Tahap 1 · WTON &amp; WEGE beserta subtree-nya dikecualikan · Persiapan Tahun Pelaporan 2027</p>
+  <div class="chips" id="chips"></div>
+</header>
+
+<div class="toolbar">
+  <button id="btnXls" title="Unduh sebagai file Excel berisi 26 worksheet">⬇ Unduh Excel (.xls · 25 sheet)</button>
+  <button class="sec" id="btnCsv">Ekspor sheet aktif (CSV)</button>
+  <button class="sec" id="btnSend">Kirim isian ke chat</button>
+  <button class="ghost" id="btnImp">Impor JSON</button>
+  <input type="file" id="fImp" accept="application/json" style="display:none">
+  <button class="ghost" id="btnPrint">Cetak sheet aktif</button>
+  <input type="search" id="q" placeholder="Cari butir data…">
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="main"></div>
+
+<div class="foot" id="foot"></div>
+</div>
+
+<script id="prova-snapshot" type="application/json">{"meta":{"versi":"1.0","tanggal":"21 Oktober 2026"},"footer":"PROXSIS SUSTAINABILITY RESEARCH · Buku kerja internal persiapan PSPK FY2027 · Tahap 1: WIKA induk dan 24 entitas lingkup konsolidasinya, WTON dan WEGE beserta subtree dikecualikan · Disusun 21 Oktober 2026 · Bukan opini audit, bukan nasihat hukum, dan bukan pengganti validasi ke dokumen asli yang bersih dari artefak OCR.","ent":[{"no":1,"name":"PT Wijaya Karya (Persero) Tbk","kode":"01 WIKA Holding","level":"Holding","parent":"Negara RI (Dwiyangsa) · BKI 91,018%","pct":"-","asset":19450,"bidang":"Infrastruktur dan konstruksi terintegrasi","tg":"H,C,S,P","arch":"holding","note":"Holding adalah <b>penyusun laporan tunggal</b> (B38 PSPK 1). Paket data 24 entitas lain mengalir ke sini, bukan diterbitkan sebagai laporan terpisah."},{"no":2,"name":"PT Wijaya Karya Realty","kode":"02 WIKA Realty","level":"Anak langsung","parent":"WIKA (langsung)","pct":"95,10","asset":12499.24,"bidang":"Realty, properti, dan kawasan","tg":"E,P","arch":"properti","note":"Induk dari empat anak tidak langsung dalam lingkup ini (MCC, KRJ, Senggigi, dan IBKJ)."},{"no":3,"name":"PT Wijaya Karya Industri dan Konstruksi","kode":"03 WIKA IKON","level":"Anak langsung","parent":"WIKA (langsung)","pct":"99,57","asset":1770.13,"bidang":"EPC industri, kilang, dan energi","tg":"C","arch":"konstruksi","note":""},{"no":4,"name":"PT Wijaya Karya Rekayasa Konstruksi","kode":"04 WIKA RK","level":"Anak langsung","parent":"WIKA (langsung)","pct":"98,94","asset":605.24,"bidang":"MEP, O and M, digital twin","tg":"C,E","arch":"konstruksi","note":"Induk langsung PT Wijaya Karya Industri Energi (no. 14) dan mitra KSO M and P Paket III (no. 24)."},{"no":5,"name":"PT Wijaya Karya Bitumen","kode":"05 WIKA Bitumen","level":"Anak langsung","parent":"WIKA (langsung)","pct":"99,39","asset":222.12,"bidang":"Tambang dan pengolahan aspal","tg":"M,P","arch":"produksi","note":"Induk langsung PT Wijaya Karya Aspal (no. 13)."},{"no":6,"name":"PT Wijaya Karya Serang Panimbang","kode":"06 WIKA Serang Panimbang","level":"Anak langsung","parent":"WIKA (langsung)","pct":"84,17","asset":7513.06,"bidang":"Pengembangan dan pengelolaan jalan tol","tg":"R,P","arch":"tol","note":"Aset terbesar kedua dalam lingkup ini setelah Holding — paparan risiko fisik iklim menjadi butir paling material."},{"no":7,"name":"PT WIKA Tirta Jaya Jatiluhur","kode":"07 WIKA Tirta Jatiluhur","level":"Anak langsung","parent":"WIKA (langsung)","pct":"85,31","asset":1728.27,"bidang":"Pengelolaan air baku","tg":"W","arch":"air","note":"Tempat uji B30 (air sebagai risiko dan peluang) — mutu, kehilangan air, dan energi pemompaan adalah butir paling sensitif."},{"no":8,"name":"KSO WIKA - PT Rumah Punakawan (Persero)","kode":"08 KSO Rumah Punakawan","level":"Anak langsung (KSO)","parent":"WIKA (kontrak operasi bersama)","pct":"100,00","asset":500.97,"bidang":"Pengembangan dan pengelolaan tanah","tg":"S,C","arch":"kso","note":"Dikonsolidasi 100% di laporan keuangan sehingga wajib masuk batas pelaporan (par. 20 PSPK 1)."},{"no":9,"name":"PT Makassar Coastal City (MCC)","kode":"09 MCC","level":"Anak tidak langsung","parent":"PT Wijaya Karya Realty","pct":"99,31","asset":427.26,"bidang":"Properti dan kawasan pesisir","tg":"E,P","arch":"properti","note":"Nama sah hasil verifikasi 21 Oktober 2026 — sebelumnya tertulis sebagai artefak OCR. Kepemilikan 99,31% setelah pengurangan modal (Akta No. 100 tgl 20 Sep 2024). Kawasan pesisir: risiko rob dan kenaikan muka air laut wajib dinilai."},{"no":10,"name":"PT Kima Realty Jaya","kode":"10 Kima Realty Jaya","level":"Anak tidak langsung","parent":"PT Wijaya Karya Realty","pct":"56,73","asset":601.72,"bidang":"Properti dan realty","tg":"E","arch":"properti","note":"Kepemilikan 56,73% — masih dikonsolidasi penuh, sehingga kepentingan non-pengendali (F15) wajib diungkap."},{"no":11,"name":"PT Senggigi Prasena Internasional","kode":"11 Senggigi Prasena","level":"Anak tidak langsung","parent":"PT Wijaya Karya Realty","pct":"99,90","asset":216.97,"bidang":"Pariwisata dan perhotelan","tg":"E,T","arch":"hotel","note":"Satu-satunya entitas berprofil perhotelan — intensitas per kamar terpakai menjadi pembanding yang lebih bermakna daripada angka absolut."},{"no":12,"name":"PT Indo Benhil Karunia Jaya (IBKJ)","kode":"12 IBKJ","level":"Cicit (Realty lalu KRJ)","parent":"PT Kima Realty Jaya (KRJ) 100%","pct":"100,00","asset":745.57,"bidang":"Properti, realty, dan jasa","tg":"E,N","arch":"baru","note":"Nama sah hasil verifikasi 21 Oktober 2026 (Akta No. 33 tgl 21 Apr 2025). Dikonsolidasi sejak 2025 setelah pengalihan saham dari Mitsubishi Estate Co. Ltd. — <b>baseline datanya belum ada</b>, wajib dibangun pada FY2026."},{"no":13,"name":"PT Wijaya Karya Aspal","kode":"13 WIKA Aspal","level":"Anak tidak langsung","parent":"PT Wijaya Karya Bitumen","pct":"99,86","asset":65.07,"bidang":"Aspal dan properti","tg":"M","arch":"produksi","note":"Aset terkecil dalam lingkup ini, tetapi pengolahan aspal berintensitas emisi tinggi. <b>Aset kecil bukan emisi kecil</b> — jangan diprioritaskan belakangan."},{"no":14,"name":"PT Wijaya Karya Industri Energi","kode":"14 WIKA Industri Energi","level":"Anak tidak langsung","parent":"PT Wijaya Karya Rekayasa Konstruksi","pct":"100,00","asset":242.16,"bidang":"Industri energi terbarukan","tg":"M,V","arch":"produksi","note":"Penyuplai utama peluang hijau (pendapatan aktivitas adaptasi dan mitigasi menurut PSPK 2). Catatan terbuka: sumber menyebut peningkatan modal diambil seluruhnya oleh Perusahaan lewat debt to equity swap — lapisan kepemilikan (cucu via RK atau anak langsung) masih perlu konfirmasi."},{"no":15,"name":"KSO WIKA - WIKA Realty","kode":"15 KSO WIKA Realty","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Realty","pct":"100,00","asset":426.21,"bidang":"Pengelolaan lahan","tg":"S,E","arch":"kso","note":""},{"no":16,"name":"KSO WIKA - WIKA Gedung (RS UPT Vertikal Surabaya)","kode":"16 KSO RS UPT Surabaya","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":179.49,"bidang":"Konstruksi fasilitas kesehatan","tg":"S,C","arch":"kso","note":"Mitra KSO berada di subtree WEGE yang dikecualikan, tetapi WIKA yang mengonsolidasikan — tanggung jawab data tetap di WIKA."},{"no":17,"name":"KSO WIKA - WIKA Gedung (SGLC dan ERIC UGM)","kode":"17 KSO SGLC ERIC UGM","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":0.02,"bidang":"Konstruksi gedung pendidikan","tg":"S,C","arch":"kso","note":"Aset tersisa sangat kecil — kemungkinan proyek mendekati penyelesaian. Tetap wajib dilaporkan karena dikonsolidasi."},{"no":18,"name":"KSO WIKA - WIKA Gedung (ITB Innovation Park Bandung)","kode":"18 KSO ITB Innovation Park","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":10.26,"bidang":"Konstruksi gedung inovasi","tg":"S,C","arch":"kso","note":""},{"no":19,"name":"KSO WIKA - WIKA Gedung (Hotel Domestic Terminal 3)","kode":"19 KSO Hotel Domestik T3","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":6.4,"bidang":"Konstruksi perhotelan","tg":"S,C","arch":"kso","note":"Baris ini <b>pernah terduplikasi pada hasil OCR</b> sumber. Angka Rp6,40 miliar diambil satu kali — validasi ke berkas bersih sebelum dikutip resmi."},{"no":20,"name":"KSO WIKA - WIKA Gedung (Rumah Dinas Prajurit TNI AD)","kode":"20 KSO Rumah Dinas TNI AD","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":2.87,"bidang":"Konstruksi perumahan","tg":"S,C","arch":"kso","note":""},{"no":21,"name":"KSO WIKA - WIKA Gedung (Paket 3 ADLC dan IPTLC UGM)","kode":"21 KSO ADLC IPTLC UGM","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":0.7,"bidang":"Konstruksi gedung pendidikan","tg":"S,C","arch":"kso","note":""},{"no":22,"name":"KSO WIKA - WIKA Gedung (Kantor Perwakilan BI Papua Barat)","kode":"22 KSO Kantor BI Papua Barat","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":34.21,"bidang":"Konstruksi gedung kantor","tg":"S,C","arch":"kso","note":"Lokasi kerja jauh — logistik material dan perjalanan dinas menjadi penyumbang emisi terbesar."},{"no":23,"name":"KSO WIKA - WIKA Gedung (RAP dan DWS Gedung Jakarta dan Bali)","kode":"23 KSO RAP DWS Jakarta Bali","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Gedung","pct":"100,00","asset":38.07,"bidang":"Pengembangan sistem operasional gedung","tg":"S,C","arch":"kso","note":"Nama resmi di sumber: <b>KSO WG-WIKA</b> (Perjanjian No. 005/Contract.IOSDB/IDRIP-BMKG/2024 tgl 31 Jan 2024) — paket konstruksi pengembangan sistem operasional INATEWS."},{"no":24,"name":"KSO WIKA - WIKA Rekayasa Konstruksi (MPP dan Gas Engine Paket III)","kode":"24 KSO MPP Gas Engine III","level":"KSO terkonsolidasi","parent":"WIKA + WIKA RK","pct":"100,00","asset":114.67,"bidang":"Pembangkit listrik mobile dan gas engine","tg":"S,V","arch":"kso","note":"Amandemen ke-12 tgl 20 Mei 2024: PT Wahana Idea Cipta keluar dari konsorsium sehingga kepemilikan WIKA dan WIKA RK menjadi 100%. Profil pembangkit — butir EV1 dan EV2 wajib diisi."},{"no":25,"name":"KSO WIKA - WIKA Beton (Pergerakan Tanah Tol Cisumdawu)","kode":"25 KSO Cisumdawu","level":"KSO terkonsolidasi","parent":"WIKA + WIKA Beton","pct":"100,00","asset":152.56,"bidang":"Penanganan pergerakan tanah infrastruktur","tg":"S,C","arch":"kso","note":"Nama resmi di sumber: <b>KSO WIKA - WITON</b> (kemungkinan salah ketik dokumen asli untuk WTON). Perjanjian No. PS.03.03/B.Infra 1.00014/2025 tgl 30 Mei 2025. Mitra berasal dari subtree WTON yang dikecualikan — keputusan menahan entitas ini di Tahap 1 perlu disepakati tim."}],"cat":[["TK1","Tata Kelola","Organ tata kelola yang mengawasi isu keberlanjutan, beserta nama dan jabatan penanggung jawab","PSPK 1 par. 27(a)","Nama organ; nama; jabatan","SK atau piagam dewan (manual)","ALL"],["TK2","Tata Kelola","Tanggung jawab keberlanjutan yang tecermin dalam kerangka acuan, mandat, dan uraian peran","PSPK 1 par. 27(a)(i)","Ya/Tidak + nomor dokumen","Sekretaris Perusahaan","ALL"],["TK3","Tata Kelola","Penentuan ketersediaan keterampilan dan kompetensi keberlanjutan pada organ tata kelola","PSPK 1 par. 27(a)(ii)","Ya/Sebagian/Belum + rencana pengembangan","HRD dan Sekretaris Perusahaan","ALL"],["TK4","Tata Kelola","Frekuensi organ tata kelola menerima laporan risiko dan peluang keberlanjutan","PSPK 1 par. 27(a)(iii)","kali per tahun","Notulen rapat dewan","ALL"],["TK5","Tata Kelola","Pertimbangan risiko dan peluang keberlanjutan dalam strategi, keputusan, dan transaksi utama","PSPK 1 par. 27(a)(iv)","Ya/Tidak + contoh keputusan","Risalah rapat manajemen","ALL"],["TK6","Tata Kelola","Peran manajemen dalam proses tata kelola, pengendalian, dan prosedur keberlanjutan","PSPK 1 par. 27(b)","Struktur + nama jabatan","Bagan organisasi","ALL"],["TK7","Tata Kelola","Metrik keberlanjutan yang disertakan dalam kebijakan remunerasi","PSPK 1 par. 27(a)(v)","Ya/Tidak + bobot (%)","Komite Remunerasi","ALL"],["TK8","Tata Kelola","Prosedur identifikasi, penilaian, prioritas, dan pemantauan risiko serta peluang","PSPK 1 par. 43-44","Nama prosedur + tautan dokumen","Unit manajemen risiko","ALL"],["ST1","Strategi","Daftar risiko dan peluang keberlanjutan material entitas","PSPK 1 par. 28, 32","maks 10 baris: jenis, uraian, horizon","Hasil asesmen materialitas","ALL"],["ST2","Strategi","Definisi horizon pendek, menengah, dan panjang yang dipakai entitas","PSPK 1 par. 31","rentang tahun","Kebijakan internal","ALL"],["ST3","Strategi","Dampak yang diharapkan atas arus kas, akses pendanaan, atau biaya modal","PSPK 1 par. 32","Rp juta per risiko atau peluang","Keuangan dan unit ESG","ALL"],["ST4","Strategi","Respons strategis atas setiap risiko dan peluang beserta investasinya","PSPK 1 par. 33-35","program + status pelaksanaan","Rencana bisnis entitas","ALL"],["ST5","Strategi","Trade-off antar risiko dan peluang yang dipertimbangkan manajemen","PSPK 1 par. 33(c), B40(b)","uraian singkat","Risalah rapat manajemen","ALL"],["ST6","Strategi","Hasil analisis skenario iklim dan sensitivitas keuangan","PSPK 2 par. 6-10","skenario + rentang dampak","Kajian internal atau eksternal","H,P,R"],["F1","Keuangan","Pendapatan per segmen dan lini usaha","PSPK 1 par. 23, 32","Rp juta per segmen","SAP FI + CO-PA (penuh)","ALL"],["F2","Keuangan","Nilai kontrak dan order backlog per proyek","PSPK 1 par. 32; PSPK 2 par. 14","Rp juta per WBS","SAP PS (penuh)","C,S"],["F3","Keuangan","Belanja modal per proyek dan kelas aset","PSPK 2 par. 19-20, 29","Rp juta","SAP FI-AA + PS (penuh)","ALL"],["F4","Keuangan","Aset tetap terpapar risiko fisik, per kelas dan lokasi","PSPK 2 par. 15, 19, 29(c)","Rp juta + km atau m2","SAP FI-AA + master lokasi (sebagian)","P,R"],["F5","Keuangan","Provisi terkait iklim: penurunan tanah, penutupan, sengketa","PSPK 2 par. 19","Rp juta + dasar perhitungan","SAP FI provisi (penuh)","ALL"],["F6","Keuangan","Penurunan nilai aset terkait iklim","PSPK 2 par. 19","Rp juta + asumsi kunci","SAP FI-AA + uji impairment (penuh)","ALL"],["F7","Keuangan","Liabilitas kontinjensi dan perkara hukum terkait iklim atau lingkungan","PSPK 2 par. 19; PSPK 1 par. 74-76","jumlah perkara + estimasi Rp","Register legal (sebagian)","ALL"],["F8","Keuangan","Struktur utang serta covenant pembiayaan berkelanjutan dan target kinerjanya","PSPK 2 par. 29 (pembiayaan)","saldo Rp + target kinerja","SAP FI + TM (penuh)","H"],["F9","Keuangan","Beban bunga dan biaya dana sebagai indikator akses pendanaan","PSPK 1 par. 32","Rp juta","SAP FI + TM (penuh)","H"],["F10","Keuangan","Pajak karbon dan pungutan lingkungan bila berlaku","PSPK 2 par. 19 (risiko transisi)","Rp juta atau status belum berlaku","SAP FI pajak (sebagian)","M,V,C"],["F11","Keuangan","Beban remunerasi pegawai untuk rekonsiliasi dengan data SDM","PSPK 1 par. 23-24","Rp juta + jumlah pegawai","SAP FI-CO + HCM payroll (penuh)","ALL"],["F12","Keuangan","Belanja TJSL atau CSR per program dan lokasi","PSPK 1 par. 32; uji materialitas","Rp juta + jumlah penerima manfaat","SAP FI beban + data program (sebagian)","ALL"],["F13","Keuangan","Pertanggungan asuransi risiko iklim","PSPK 2 par. 21 (mitigasi risiko)","premi Rp + cakupan perlindungan","Register keuangan (manual)","H,P"],["F14","Keuangan","Transaksi pihak berelasi dan eliminasi antar entitas dalam grup","PSPK 1 par. 20; B38","Rp juta per pasangan entitas","SAP Group Reporting (penuh)","ALL"],["F15","Keuangan","Kepentingan non-pengendali dan persentase kepemilikan","PSPK 2 par. 29(a)(iv)","persen + Rp juta","SAP Group Reporting (penuh)","ALL"],["F16","Keuangan","Arus kas untuk kebutuhan analisis skenario keuangan","PSPK 2 par. 20","Rp juta per periode","SAP FI arus kas (penuh)","H"],["F17","Keuangan","Anggaran versus realisasi inisiatif iklim dan dekarbonisasi","PSPK 1 par. 49-53 (target)","Rp juta + persen capaian","SAP CO/PS + penanda aktivitas (sebagian)","ALL"],["F18","Keuangan","Biaya operasional energi dan air per lokasi","PSPK 2 par. 29","Rp juta per lokasi","SAP CO + AP invoice utilitas (sebagian)","ALL"],["F19","Keuangan","Inventaris, penjualan, dan sewa properti","PSPK 2 par. 14 (model bisnis)","unit + Rp juta + tingkat hunian persen","SAP RE-FX + FI (sebagian)","E,T"],["F20","Keuangan","Pendapatan tol dan volume lalu lintas","PSPK 2 par. 14, 19","Rp juta + LHV per hari","Sistem billing ke jurnal FI (sebagian)","R"],["E1","Emisi GRK","Emisi Cakupan 1 dari pembakaran stasioner: genset dan boiler","PSPK 2 par. 29(a)","tCO2e + liter atau m3 bahan bakar","SAP MM pembelian BBM + log alat (sebagian)","ALL"],["E2","Emisi GRK","Emisi Cakupan 1 dari armada kendaraan perusahaan","PSPK 2 par. 29(a)","tCO2e + liter per jenis kendaraan","Kartu BBM atau SAP PM fleet (sebagian)","ALL"],["E3","Emisi GRK","Emisi Cakupan 1 dari kebocoran refrigeran AC dan chiller","PSPK 2 par. 29(a)","tCO2e + kg refrigeran + nilai GWP","EHS inspeksi (manual)","C,E,T"],["E4","Emisi GRK","Emisi Cakupan 2 dari listrik terbeli beserta metode pelaporan","PSPK 2 par. 29(a)","kWh + tCO2e + location atau market-based","SAP AP invoice listrik + meter (sebagian)","ALL"],["E5","Emisi GRK","Cakupan 3 Kategori 1: material terbeli semen, baja, aspal, agregat","PSPK 2 par. 29(a); B05-B06","ton + tCO2e","SAP MM riwayat pembelian (penuh)","C,M,S"],["E6","Emisi GRK","Cakupan 3 Kategori 4: transportasi dan distribusi hulu","PSPK 2 par. 29(a)","ton-km + tCO2e","Data vendor angkut (manual)","C,M"],["E7","Emisi GRK","Cakupan 3 Kategori 5: pengolahan limbah","PSPK 2 par. 29(a)","ton + tCO2e","EHS manifest (manual)","ALL"],["E8","Emisi GRK","Cakupan 3 Kategori 6: perjalanan dinas","PSPK 2 par. 29(a)","km per moda + tCO2e","Reimbursement HCM (sebagian)","ALL"],["E9","Emisi GRK","Cakupan 3 kategori lain yang relevan: 2, 7, 9, 11, 12, 15","PSPK 2 par. 29(a); B05-B06","tCO2e + dasar estimasi","Turunan spend-based (manual)","ALL"],["E10","Emisi GRK","Metode alokasi emisi antar mitra konsorsium","PSPK 2 par. 29(a)(iv)","persen porsi + dasar perjanjian","Perjanjian KSO (manual)","S"],["E11","Emisi GRK","Total emisi Cakupan 1, 2, 3 beserta intensitasnya","PSPK 2 par. 29(a), 30","tCO2e + tCO2e per Rp juta pendapatan","Hitungan turunan","ALL"],["E12","Emisi GRK","Baseline emisi dan tahun dasar yang dipakai","PSPK 2 par. 36","tCO2e + tahun dasar","SR 2025 atau laporan internal","ALL"],["E13","Emisi GRK","Target penurunan emisi dan capaian tahun berjalan","PSPK 2 par. 38-40","persen + tahun target + capaian","Rencana NZE Holding","ALL"],["G1","Energi","Konsumsi energi total per lokasi","PSPK 2 par. 31(a)","GJ","Meter + tagihan utilitas (sebagian)","ALL"],["G2","Energi","Bauran energi terbarukan dalam konsumsi","PSPK 2 par. 31(a)","GJ + persen","REC PLN atau panel atap (manual)","ALL"],["G3","Energi","Penghematan energi dari inisiatif efisiensi","PSPK 2 par. 31(b)","kWh + Rp juta","Program efisiensi (manual)","ALL"],["W1","Air","Pengambilan air per sumber: PDAM, air tanah, air permukaan","PSPK 2 par. 34","m3 per sumber","Tagihan utilitas + meter (manual)","ALL"],["W2","Air","Volume air yang didaur ulang dan digunakan kembali","PSPK 2 par. 34","m3 + persen","EHS (manual)","ALL"],["W3","Air","Volume dan mutu air limpasan atau efluen","PSPK 2 par. 34","m3 + parameter terhadap baku mutu","Uji laboratorium (manual)","M,W,C"],["W4","Air","Kehilangan air atau non-revenue water","PSPK 2 par. 34","m3 + persen","Sistem distribusi (manual)","W"],["W5","Air","Energi spesifik pemompaan","PSPK 2 par. 31","kWh per m3","Meter + volume produksi (sebagian)","W,V"],["L1","Limbah dan Material","Timbulan limbah bahan berbahaya dan beracun","PSPK 2 par. 33","ton + jenis limbah","EHS manifest (manual)","ALL"],["L2","Limbah dan Material","Pengelola limbah B3 berizin dan volume per vendor","PSPK 2 par. 33","nama vendor + nomor izin + ton","EHS (manual)","ALL"],["L3","Limbah dan Material","Limbah non-B3 menurut jalur reuse, recycle, dan disposal","PSPK 2 par. 33","ton per jalur pengelolaan","EHS (manual)","ALL"],["L4","Limbah dan Material","Material utama terbeli dan konten daur ulangnya","PSPK 2 par. 33","ton + persen konten daur ulang","SAP MM (penuh)","C,M"],["L5","Limbah dan Material","Sertifikasi material berkelanjutan","PSPK 2 par. 33","jenis sertifikat + volume","Procurement (manual)","C,M"],["K1","K3 dan Tenaga Kerja","Jumlah tenaga kerja: tetap, kontrak, dan alih daya","PSPK 1 par. 32","orang per kategori","SAP HCM (penuh)","ALL"],["K2","K3 dan Tenaga Kerja","Jam kerja total sebagai penyebut tingkat kecelakaan","PSPK 2 par. 32","man-hours","SAP HCM time (penuh)","ALL"],["K3","K3 dan Tenaga Kerja","Fatalitas, kecelakaan kerja, dan hari hilang","PSPK 2 par. 32","jumlah + FR + TRIR","Laporan SHE (manual)","ALL"],["K4","K3 dan Tenaga Kerja","Kasus penyakit akibat kerja","PSPK 2 par. 32","jumlah kasus","EHS dan klinik (manual)","ALL"],["K5","K3 dan Tenaga Kerja","Jam pelatihan K3 per pekerja","PSPK 2 par. 32","jam per pekerja","SAP HCM learning (sebagian)","ALL"],["K6","K3 dan Tenaga Kerja","Komposisi gender keseluruhan dan di tingkat manajerial","PSPK 1 par. 32","orang + persen","SAP HCM (penuh)","ALL"],["K7","K3 dan Tenaga Kerja","Mekanisme pengaduan ketenagakerjaan dan hak asasi manusia","PSPK 1 par. 27, 32","ada atau tidak + jumlah kasus","Whistleblowing system (manual)","ALL"],["J1","Sosial dan Rantai Pasok","Program pemberdayaan masyarakat per lokasi","PSPK 1 par. 32; uji materialitas","nama program + Rp juta + penerima manfaat","Unit TJSL (sebagian)","ALL"],["J2","Sosial dan Rantai Pasok","Jam pelatihan dan pengembangan karyawan","PSPK 1 par. 32","jam per karyawan","SAP HCM (sebagian)","ALL"],["J3","Sosial dan Rantai Pasok","Belanja pada pemasok lokal dan UMKM","PSPK 2 par. 29 (risiko transisi)","Rp juta + persen","SAP MM procurement (penuh)","ALL"],["J4","Sosial dan Rantai Pasok","Penilaian ESG atau kepatuhan atas pemasok","PSPK 2 par. 29; B05","jumlah pemasok dinilai + persen","Vendor master (sebagian)","C,M"],["PJ1","Proyek dan Operasi","Daftar proyek berjalan: nama, lokasi, nilai kontrak, progres fisik","PSPK 1 par. 32; PSPK 2 par. 14","tabel per proyek","SAP PS (penuh)","C,S"],["PJ2","Proyek dan Operasi","Status dokumen lingkungan per proyek: AMDAL, SPPL, RKL-RPA","PSPK 2 par. 33-34","status + nomor dokumen","EHS proyek (manual)","C,S"],["PJ3","Proyek dan Operasi","Insiden lingkungan di lokasi proyek: tumpahan dan pencemaran","PSPK 2 par. 33","jumlah + dampak","EHS (manual)","C,S"],["PJ4","Proyek dan Operasi","Pemantauan kebisingan, debu, dan emisi tidak berpipa di sekitar proyek","PSPK 2 par. 33","hasil ukur terhadap baku mutu","Uji lingkungan (manual)","C,S"],["PF1","Paparan Aset Fisik","Daftar aset tetap kritis beserta koordinat lokasinya","PSPK 2 par. 15, 19","nama aset + koordinat","SAP FI-AA + master lokasi (sebagian)","P,R,E"],["PF2","Paparan Aset Fisik","Kelas kerentanan iklim per lokasi: banjir, longsor, rob, kekeringan","PSPK 2 par. 19","kelas kerentanan per lokasi","Kajian kerentanan (manual)","P,R,E"],["PF3","Paparan Aset Fisik","Nilai tercatat aset pada lokasi berpaparan tinggi","PSPK 2 par. 19, 29(c)","Rp juta","SAP FI-AA (penuh)","P,R,E"],["PF4","Paparan Aset Fisik","Gangguan operasi akibat cuaca ekstrem","PSPK 2 par. 19","jumlah kejadian + jam henti + Rp","Log operasi (manual)","P,R,E"],["EV1","Aset Energi","Kapasitas terpasang dan volume pembangkitan","PSPK 2 par. 14, 31","MW + MWh","Aset + log operasi (manual)","V"],["EV2","Aset Energi","Emisi proses atau kebocoran gas: metana dan SF6","PSPK 2 par. 29(a)","tCO2e","EHS (manual)","V,M"],["NB1","Entitas Baru","Tahun dasar dan ketersediaan data historis tiga tahun terakhir","PSPK 1 par. 70-71; keringanan DK11","tahun + ada, sebagian, atau tidak","Arsip entitas","N"],["V1","Verifikasi","Penanggung jawab tiap butir data: nama, jabatan, kontak","PSPK 1 par. 15(a)","nama + jabatan + kontak","Surat penunjukan","ALL"],["V2","Verifikasi","Bukti pendukung per butir: invoice, meter, laporan laboratorium","PSPK 1 par. 15(a)","jenis bukti + periode","Unit pemilik data","ALL"],["V3","Verifikasi","Rekonsiliasi angka dengan laporan keuangan entitas","PSPK 1 par. 23-24; B42(c)","selisih + penjelasan","Keuangan entitas","ALL"],["V4","Verifikasi","Status verifikasi data: belum, internal, atau eksternal","PSPK 1 par. 15(a), 62","status + nama verifikator","Audit internal","ALL"]],"ex":{"holding":["contoh","Emisi Cakupan 1 dari pembakaran stasioner: genset dan boiler","PSPK 2 par. 29(a)","tCO2e + liter bahan bakar","SAP MM pembelian BBM + log alat","1.284,60 tCO2e","342.100 liter solar dikali faktor emisi 3,756 tCO2e per 1.000 liter (IPCC AR6). Sudah direkonsiliasi dengan SR 2025, selisih nol.","Manajer ESG Holding","Siap"],"konstruksi":["contoh","Emisi Cakupan 1 dari armada kendaraan perusahaan","PSPK 2 par. 29(a)","tCO2e + liter per jenis kendaraan","Kartu BBM atau SAP PM fleet","612,40 tCO2e","Solar alat berat 165.000 liter dan kendaraan ringan 48.000 liter pada tujuh proyek aktif. Kartu BBM dua subkontraktor belum tersedia sehingga status sebagian.","Manajer Proyek","Proses"],"properti":["contoh","Emisi Cakupan 2 dari listrik terbeli gedung kelolaan","PSPK 2 par. 29(a)","kWh + tCO2e + metode","SAP AP invoice listrik","1.930,50 tCO2e","3.215.400 kWh dikali 0,6009 tCO2e per MWh (faktor emisi grid Indonesia, location-based). Metode market-based belum dipakai karena REC belum dimiliki.","Manajer Utilitas","Siap"],"hotel":["contoh","Pengambilan air per sumber: PDAM, air tanah, air permukaan","PSPK 2 par. 34","m3 per sumber","Tagihan utilitas + meter","48.720 m3","PDAM 31.200 m3 dan air tanah 17.520 m3 dari tiga sumur pantau. Intensitas 287 liter per kamar terpakai.","Manajer Hotel","Siap"],"produksi":["contoh","Konsumsi energi total per lokasi","PSPK 2 par. 31(a)","GJ","Meter + tagihan utilitas","74.300 GJ","Solar 4.850 KL setara 42.100 GJ, gas alam 18.000 m3 setara 9.600 GJ, listrik 3.100 MWh setara 10.800 GJ, residu biomassa 11.800 GJ. Metering per unit mixing plant.","Manajer Pabrik","Proses"],"air":["contoh","Volume air baku diproduksi dan air terdistribusi","PSPK 2 par. 34","m3","SCADA atau meter outlet","18.250.000 m3","Empat unit IPA dengan meter outlet terkalibrasi. Kehilangan air 12,4 persen dihitung dari selisih produksi dan volume tertagih.","Manajer Operasi","Siap"],"tol":["contoh","Aset tetap terpapar risiko fisik, per kelas dan lokasi","PSPK 2 par. 15, 19, 29(c)","Rp juta + panjang ruas","SAP FI-AA + master lokasi","Rp2.140.000 juta","Ruas 30,5 km disegmentasi per km: 4,2 km berpaparan genangan tinggi dan 2,8 km rawan longsor. Master lokasi SAP belum lengkap.","Manajer Aset","Proses"],"kso":["contoh","Nilai kontrak dan order backlog per proyek","PSPK 1 par. 32; PSPK 2 par. 14","Rp juta per WBS","SAP PS dikelola WIKA sebagai operator","Rp1.240.000 juta","Progres fisik 68,4 persen. Porsi konsorsium WIKA 60 persen sesuai perjanjian KSO dan tanggal yang tercatat; emisi dialokasikan mengikuti porsi tersebut.","Manajer Proyek KSO","Siap"],"baru":["contoh","Tahun dasar dan ketersediaan data historis tiga tahun terakhir","PSPK 1 par. 70-71; keringanan DK11","tahun + status","Arsip entitas","2025 sebagai tahun dasar","Entitas baru dikonsolidasi sejak 2025 sehingga data emisi dan utilitas 2023 sampai 2024 belum tersedia. Gunakan keringanan informasi komparatif dan mulai seri data dari FY2026.","Manajer Keuangan IBKJ","Proses"]},"exNote":{"holding":"Holding menyatukan data proyek lewat modul PS dan menjadi konsolidator seluruh paket entitas. Butir F8, F9, F13, dan F16 hanya ada di sini.","konstruksi":"Butir kelompok Proyek dan Operasi menjadi tulang punggung entitas ini. Instrumentasi metering di lokasi proyek adalah prasyarat angka emisi — tanpa meter, angka tidak dapat diverifikasi.","properti":"Fokus pada okupansi, utilitas gedung, dan penyewa. Dampak iklim terbesar berada pada Cakupan 2 dan air, bukan pada Cakupan 1.","hotel":"Laporkan intensitas per tamu atau per kamar terpakai di samping angka absolut. Volume bisnis berfluktuasi sehingga angka absolut saja tidak informatif.","produksi":"Entitas beraset kecil dengan intensitas emisi tinggi. Data aktivitas proses dan faktor emisi wajib lengkap karena bobot emisi tidak mengikuti besar kecilnya aset.","air":"Entitas ini adalah tempat uji B30: mutu air, kehilangan air, dan energi spesifik pemompaan adalah butir paling sensitif terhadap penilaian pengguna laporan.","tol":"Risiko fisik menjadi butir utama. Segmentasi ruas per kilometer dan riwayat gangguan akibat cuaca ekstrem wajib tersedia sebelum analisis skenario dapat dijalankan.","kso":"KSO bukan entitas pelapor terpisah, melainkan sumber data yang mengalir ke laporan Holding. Operator KSO, dalam hal ini WIKA, bertanggung jawab atas kelengkapan paket ini termasuk metode alokasi emisi ke mitra.","baru":"Baseline datanya belum ada. Gunakan keringanan transisi dan mulai seri data dari FY2026 agar laporan FY2027 sudah memiliki angka pembanding."},"petunjuk":["<b>Satu baris untuk satu butir data.</b> Jangan menggabungkan dua butir dalam satu sel, dan jangan mengosongkan baris yang tidak relevan — tulis Tidak Relevan pada kolom Status beserta alasan singkat.","<b>Baris berlatar kuning adalah CONTOH format,</b> bukan data entitas ini. Ganti dengan angka sebenarnya, lalu hapus barisnya sebelum worksheet dijadikan lampiran resmi.","<b>Periode isian adalah Tahun Buku FY2026</b> yaitu 1 Januari sampai 31 Desember 2026, kecuali butir tertentu meminta periode lain.","<b>Mata uang Rupiah dan satuan juta,</b> mengikuti laporan keuangan entitas. Paragraf 24 PSPK 1 mewajibkan mata uang yang sama dengan laporan keuangan.","<b>Angka yang juga muncul di laporan keuangan</b> — pendapatan, aset, belanja modal, beban, provisi — wajib dapat direkonsiliasi. Tulis selisih dan penjelasannya pada kolom Keterangan.","<b>Setiap angka emisi wajib membawa tiga hal:</b> data aktivitas, faktor emisi beserta sumbernya, dan metode perhitungan. Tanpa ketiganya angka tidak dapat diverifikasi.","<b>Cakupan 1 dan Cakupan 2 dilaporkan terpisah</b> antara entitas terkonsolidasi dan investee lain, sesuai PSPK 2 paragraf 29(a)(iv).","<b>Untuk KSO:</b> data dilaporkan penuh karena dikonsolidasi 100 persen di laporan keuangan, disertai catatan metode alokasi kepada mitra konsorsium.","<b>Kolom Sumber Data</b> diisi nama modul SAP bila tersedia. Bila manual, tulis nama berkas dan unit pemiliknya agar penagihan data berikutnya jelas.","<b>Kolom Status hanya boleh empat nilai:</b> Siap, Proses, Belum, atau Tidak Relevan. Nilai lain akan menyulitkan rekapitulasi tingkat grup.","<b>Kolom PIC diisi nama orang dan jabatan,</b> bukan nama unit saja. Penagihan data memerlukan pihak yang dapat dimintai keterangan.","<b>Batas waktu internal (usulan, perlu ditetapkan Holding):</b> paket data entitas diserahkan paling lambat 31 Januari 2027 agar tersedia waktu konsolidasi dan verifikasi sebelum laporan FY2027 terbit."]}</script>
+<script>
+var DATA = null, STATE = {}, ACTIVE = 'idx';
+var COLS = ['No','Kelompok','Butir Data yang Harus Disiapkan','Rujukan PSPK / Peta Data','Satuan / Format Isian','Sumber Data (modul / manual)','Nilai / Isian','Keterangan & Cara Hitung','PIC (nama & jabatan)','Status'];
+var EDITCOL = [6,7,8,9];
+var STATUS = ['Siap','Proses','Belum','Tidak Relevan'];
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(n){if(n==null||isNaN(n))return '—';return Number(n).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function showErr(e){
+  var d=el('div','err');d.textContent='Dashboard tidak dapat dirender: '+(e&&e.message?e.message:e)+'\n\nPastikan blok data (prova-snapshot) berisi JSON yang valid dan memakai tanda kutip ganda hanya sebagai pemisah nilai.';
+  document.getElementById('main').innerHTML='';document.getElementById('main').appendChild(d);
+}
+function keyOf(kode,id,col){return kode+'#'+id+'#'+col;}
+function getV(kode,id,col){return STATE[keyOf(kode,id,col)];}
+function setV(kode,id,col,v){STATE[keyOf(kode,id,col)]=v;}
+
+function itemsFor(ent){
+  var tg=ent.tg.split(',');
+  var out=[];
+  for(var i=0;i<DATA.cat.length;i++){
+    var it=DATA.cat[i];
+    if(it[6]==='ALL'){out.push(it);continue;}
+    var tags=it[6].split(','),hit=false;
+    for(var a=0;a<tags.length;a++){if(tg.indexOf(tags[a])>=0){hit=true;break;}}
+    if(hit)out.push(it);
+  }
+  return out;
+}
+function exRow(ent){return DATA.ex[ent.arch];}
+function exNote(ent){return DATA.exNote[ent.arch];}
+
+function buildRows(ent){
+  var items=itemsFor(ent), rows=[], lastG=null;
+  var ex=exRow(ent);
+  rows.push({id:'EX',grp:'CONTOH',item:ex[1],ref:ex[2],sat:ex[3],src:ex[4],vals:[ex[5],ex[6],ex[7],ex[8]],isEx:true});
+  for(var i=0;i<items.length;i++){
+    var it=items[i];
+    rows.push({id:it[0],grp:it[1],item:it[2],ref:it[3],sat:it[4],src:it[5],vals:['','','',''],isEx:false,gfirst:(it[1]!==lastG)});
+    lastG=it[1];
+  }
+  return rows;
+}
+function progress(ent){
+  var rows=buildRows(ent),filled=0,n=0;
+  for(var i=0;i<rows.length;i++){
+    if(rows[i].isEx)continue;
+    n++;
+    var v=getV(ent.kode,rows[i].id,9);
+    if(v && String(v).trim()!=='')filled++;
+  }
+  return {filled:filled,total:n};
+}
+
+function renderTabs(){
+  var t=document.getElementById('tabs');t.innerHTML='';
+  var b=el('button','tab'+(ACTIVE==='idx'?' on':''),'00 · Petunjuk Umum');
+  b.onclick=function(){ACTIVE='idx';render();};t.appendChild(b);
+  for(var i=0;i<DATA.ent.length;i++){
+    var e=DATA.ent[i],p=progress(e);
+    var x=el('button','tab'+(ACTIVE===e.kode?' on':''));
+    x.innerHTML=esc(e.kode)+'<span class="pg">'+p.filled+'/'+p.total+'</span>';
+    x.title=esc(e.name);
+    (function(k){x.onclick=function(){ACTIVE=k;render();};})(e.kode);
+    t.appendChild(x);
+  }
+}
+
+function renderIndex(){
+  var f=el('div','card');
+  f.appendChild(el('h2',null,'Cara memakai buku kerja ini'));
+  var p=el('p','sub','Setiap entitas memiliki satu worksheet sendiri. Worksheet berisi daftar butir data yang wajib disiapkan entitas untuk penyusunan laporan PSPK 1 dan PSPK 2 Holding tahun pelaporan 2027, satu baris contoh pengisian, dan petunjuk pengisian di bagian bawah.');
+  f.appendChild(p);
+  var g=el('div');g.style.marginTop='12px';
+  var lbl=['H · Holding','C · Konstruksi / proyek','S · KSO','P · Paparan aset fisik besar','E · Properti / gedung','T · Hotel & pariwisata','M · Produksi / manufaktur','W · Pengelolaan air','R · Jalan tol','V · Pembangkit & energi','N · Entitas baru, baseline belum ada'];
+  for(var i=0;i<lbl.length;i++){g.appendChild(el('span','gk',esc(lbl[i])));}
+  f.appendChild(el('div',null,'<div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--abu);margin-top:10px">Penanda profil entitas yang menentukan butir mana yang muncul</div>')).appendChild(g);
+  document.getElementById('main').appendChild(f);
+
+  var c=el('div','card');
+  c.appendChild(el('h2',null,'Daftar 25 Entitas dan Jumlah Butir Kebutuhannya'));
+  var tb=el('table','idx'),th='<thead><tr><th>No</th><th>Nama Entitas</th><th>Worksheet</th><th>Level</th><th>Induk Langsung</th><th>% Kepemilikan</th><th>Aset (Rp miliar)</th><th>Bidang Usaha</th><th>Butir</th><th>Terisi</th></tr></thead>';
+  var body='<tbody>';var tot=0,ast=0;
+  for(var j=0;j<DATA.ent.length;j++){
+    var e=DATA.ent[j],pr=progress(e);tot+=pr.total;ast+=(e.asset||0);
+    body+='<tr><td class="num">'+e.no+'</td><td><b>'+esc(e.name)+'</b></td><td>'+esc(e.kode)+'</td><td>'+esc(e.level)+'</td><td>'+esc(e.parent)+'</td><td class="num">'+esc(e.pct)+'</td><td class="num">'+fmt(e.asset)+'</td><td>'+esc(e.bidang)+'</td><td class="num">'+pr.total+'</td><td class="num">'+pr.filled+'</td></tr>';
+  }
+  body+='<tr><td colspan="8"><b>Total — 25 entitas</b></td><td class="num"><b>'+tot+'</b></td><td class="num">—</td></tr>';
+  body+='<tr><td colspan="8">Aset lingkup Tahap 1 (Rp miliar, sebelum eliminasi)</td><td class="num" colspan="2"><b>'+fmt(ast)+'</b></td></tr>';
+  body+='</tbody>';
+  tb.innerHTML=th+body;c.appendChild(tb);
+  c.appendChild(el('div','legend','Butir = jumlah baris kebutuhan data pada worksheet entitas tersebut. Jumlahnya berbeda antar entitas karena butir ditapis sesuai profil aktivitas — entitas konstruksi tidak ditagih data perhotelan, entitas KSO tidak ditagih analisis skenario Holding.'));
+  document.getElementById('main').appendChild(c);
+
+  var h=el('div','hint');
+  h.appendChild(el('h3',null,'Petunjuk Umum (berlaku untuk seluruh worksheet)'));
+  var ol=el('ol');
+  for(var k=0;k<DATA.petunjuk.length;k++){ol.appendChild(el('li',null,DATA.petunjuk[k]));}
+  h.appendChild(ol);
+  document.getElementById('main').appendChild(h);
+}
+
+function renderEntity(ent){
+  var rows=buildRows(ent),pr=progress(ent);
+  var c=el('div','card');
+  c.appendChild(el('h2',null,esc(ent.no+'. '+ent.name)));
+  c.appendChild(el('p','sub',esc(ent.bidang)+' · '+esc(ent.level)));
+  var ig=el('div','idgrid');
+  var boxes=[['Kode worksheet',ent.kode],['Induk langsung',ent.parent],['Kepemilikan',ent.pct+'%'],['Aset (Rp miliar)',fmt(ent.asset)],['Profil data',ent.tg],['Butir dibutuhkan',pr.total+' butir']];
+  for(var i=0;i<boxes.length;i++){
+    var b=el('div','idbox');b.innerHTML='<div class="k">'+esc(boxes[i][0])+'</div><div class="v">'+esc(String(boxes[i][1]))+'</div>';ig.appendChild(b);
+  }
+  c.appendChild(ig);
+  var pb=el('div','bar');var fill=el('i');fill.style.width=(pr.total?Math.round(pr.filled/pr.total*100):0)+'%';pb.appendChild(fill);
+  c.appendChild(el('div',null,'<div style="font-size:11.5px;color:var(--abu);margin-top:10px">Kemajuan pengisian worksheet ini: <b>'+pr.filled+' dari '+pr.total+'</b> butir telah diberi status</div>')).appendChild(pb);
+  if(ent.note){var nb=el('div','hint');nb.style.borderStyle='solid';nb.style.background='var(--hijau-muda)';nb.innerHTML='<b>Catatan entitas:</b> '+ent.note;c.appendChild(nb);}
+  document.getElementById('main').appendChild(c);
+
+  var w=el('div','card');w.style.padding='0';w.style.overflow='auto';
+  var t=el('table','dt');
+  var thead='<thead><tr>';for(var a=0;a<COLS.length;a++){thead+='<th>'+esc(COLS[a])+'</th>';}thead+='</tr></thead>';
+  var q=(document.getElementById('q').value||'').toLowerCase();
+  var tb='<tbody>';
+  for(var r=0;r<rows.length;r++){
+    var x=rows[r];
+    if(q && (x.item+' '+x.grp+' '+x.ref+' '+x.src).toLowerCase().indexOf(q)<0 && !x.isEx)continue;
+    tb+='<tr class="'+(x.isEx?'ex':'')+'">';
+    tb+='<td class="'+(x.isEx?'tag':'idc')+'">'+(x.isEx?'CONTOH':esc(x.id))+'</td>';
+    tb+='<td class="grp">'+esc(x.grp)+'</td>';
+    tb+='<td'+(x.isEx?' style="font-style:normal"':'')+'>'+esc(x.item)+'</td>';
+    tb+='<td>'+esc(x.ref)+'</td>';
+    tb+='<td>'+esc(x.sat)+'</td>';
+    tb+='<td>'+esc(x.src)+'</td>';
+    for(var cc=0;cc<4;cc++){
+      var col=6+cc, val=x.isEx?x.vals[cc]:(getV(ent.kode,x.id,col)||'');
+      var cls=col===9?'ed stat':'ed';
+      tb+='<td class="'+cls+'" contenteditable="true" data-k="'+esc(ent.kode)+'" data-i="'+esc(x.id)+'" data-c="'+col+'">'+esc(val)+'</td>';
+    }
+    tb+='</tr>';
+  }
+  tb+='</tbody>';
+  t.innerHTML=thead+tb;w.appendChild(t);
+  document.getElementById('main').appendChild(w);
+
+  var cells=w.querySelectorAll('td.ed');
+  for(var z=0;z<cells.length;z++){
+    cells[z].addEventListener('blur',function(){
+      var v=this.textContent.trim();
+      setV(this.getAttribute('data-k'),this.getAttribute('data-i'),Number(this.getAttribute('data-c')),v);
+    });
+  }
+  if(!x_isEx(rows)){/* noop */}
+  var h=el('div','hint');
+  h.appendChild(el('h3',null,'Petunjuk Pengisian — Worksheet '+esc(ent.kode)));
+  var ol=el('ol');
+  for(var p2=0;p2<DATA.petunjuk.length;p2++){ol.appendChild(el('li',null,DATA.petunjuk[p2]));}
+  h.appendChild(ol);
+  var en=el('div','ent');en.innerHTML='<b>Catatan khusus entitas ini:</b> '+esc(exNote(ent));
+  h.appendChild(en);
+  var st=el('div','ent');st.style.background='var(--kuning)';st.innerHTML='<b>Baris CONTOH:</b> nilai pada baris berlatar kuning adalah contoh format pengisian, bukan data entitas ini. Timbang ulang dengan angka sebenarnya, lalu hapus barisnya sebelum worksheet dipakai sebagai lampiran resmi.';
+  h.appendChild(st);
+  document.getElementById('main').appendChild(h);
+}
+function x_isEx(rows){return rows&&rows.length>0;}
+
+function render(){
+  document.getElementById('main').innerHTML='';
+  renderTabs();
+  if(ACTIVE==='idx'){renderIndex();return;}
+  var ent=null;
+  for(var i=0;i<DATA.ent.length;i++){if(DATA.ent[i].kode===ACTIVE){ent=DATA.ent[i];break;}}
+  if(!ent){renderIndex();return;}
+  renderEntity(ent);
+}
+
+/* ---------- Ekspor ---------- */
+function xs(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function sheetName(s){return String(s).replace(/[\[\]\:\*\?\/\\]/g,' ').substring(0,31);}
+function cell(v,st){return '<Cell ss:StyleID="'+(st||'sT')+'"><Data ss:Type="String">'+xs(v)+'</Data></Cell>';}
+function cellN(v,st){if(v===''||v==null||isNaN(v))return cell('',st);return '<Cell ss:StyleID="'+(st||'sN')+'"><Data ss:Type="Number">'+v+'</Data></Cell>';}
+function rowx(cells){return '<Row>'+cells.join('')+'</Row>';}
+
+function xlsAll(){
+  var out='<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>'+
+  '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
+  '<Styles>'+
+  '<Style ss:ID="Default" ss:Name="Normal"><Font ss:FontName="Calibri" ss:Size="10"/><Alignment ss:Vertical="Top" ss:WrapText="1"/></Style>'+
+  '<Style ss:ID="sT"><Font ss:FontName="Calibri" ss:Size="10"/><Alignment ss:Vertical="Top" ss:WrapText="1"/><Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#DDE6E0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#DDE6E0"/></Borders></Style>'+
+  '<Style ss:ID="sN" ss:Parent="sT"><Alignment ss:Horizontal="Right" ss:Vertical="Top"/></Style>'+
+  '<Style ss:ID="sTitle"><Font ss:FontName="Calibri" ss:Size="14" ss:Bold="1" ss:Color="#0E5C38"/></Style>'+
+  '<Style ss:ID="sSub"><Font ss:FontName="Calibri" ss:Size="10" ss:Color="#5B6B62"/></Style>'+
+  '<Style ss:ID="sHdr"><Font ss:FontName="Calibri" ss:Size="10" ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#1A7A4C" ss:Pattern="Solid"/><Alignment ss:Vertical="Center" ss:WrapText="1"/></Style>'+
+  '<Style ss:ID="sEx"><Interior ss:Color="#FFF6E0" ss:Pattern="Solid"/><Font ss:FontName="Calibri" ss:Size="10" ss:Italic="1"/><Alignment ss:Vertical="Top" ss:WrapText="1"/></Style>'+
+  '<Style ss:ID="sExN" ss:Parent="sEx"><Alignment ss:Horizontal="Right" ss:Vertical="Top"/></Style>'+
+  '<Style ss:ID="sGrp"><Font ss:FontName="Calibri" ss:Size="10" ss:Bold="1" ss:Color="#0E5C38"/></Style>'+
+  '<Style ss:ID="sH2"><Font ss:FontName="Calibri" ss:Size="11" ss:Bold="1" ss:Color="#0E5C38"/></Style>'+
+  '</Styles>';
+
+  /* Sheet 00: Petunjuk Umum + daftar entitas */
+  var idx='<Worksheet ss:Name="00 Petunjuk Umum"><div class="fit-wrap"><Table ss:DefaultRowHeight="15">';
+  idx+='<Column ss:Width="34"/><Column ss:Width="250"/><Column ss:Width="150"/><Column ss:Width="130"/><Column ss:Width="200"/><Column ss:Width="80"/><Column ss:Width="90"/><Column ss:Width="200"/>';
+  idx+=rowx([cell('BUKU KERJA KEBUTUHAN DATA PSPK — 25 ENTITAS WIKA (TAHAP 1)','sTitle')]);
+  idx+=rowx([cell('WTON dan WEGE beserta subtree-nya dikecualikan. Disusun 21 Oktober 2026. Bukan opini audit.','sSub')]);
+  idx+=rowx([cell('')]);
+  idx+=rowx([cell('DAFTAR ENTITAS','sH2')]);
+  idx+=rowx([cell('No','sHdr'),cell('Nama Entitas','sHdr'),cell('Worksheet','sHdr'),cell('Level','sHdr'),cell('Induk Langsung','sHdr'),cell('% Kepemilikan','sHdr'),cell('Aset (Rp miliar)','sHdr'),cell('Bidang Usaha','sHdr')]);
+  for(var i=0;i<DATA.ent.length;i++){
+    var e=DATA.ent[i];
+    idx+=rowx([cell(String(e.no)),cell(e.name),cell(e.kode),cell(e.level),cell(e.parent),cell(e.pct),cellN(e.asset),cell(e.bidang)]);
+  }
+  idx+=rowx([cell('')]);
+  idx+=rowx([cell('PETUNJUK UMUM','sH2')]);
+  for(var j=0;j<DATA.petunjuk.length;j++){idx+=rowx([cell(String(j+1)),cell(DATA.petunjuk[j].replace(/<[^>]+>/g,''))]);}
+  idx+='</Table></div></Worksheet>';
+  out+=idx;
+
+  /* Sheet per entitas */
+  for(var s=0;s<DATA.ent.length;s++){
+    var ent=DATA.ent[s],rows=buildRows(ent);
+    var sh='<Worksheet ss:Name="'+xs(sheetName(ent.kode))+'"><div class="fit-wrap"><Table ss:DefaultRowHeight="15">';
+    sh+='<Column ss:Width="34"/><Column ss:Width="120"/><Column ss:Width="300"/><Column ss:Width="150"/><Column ss:Width="150"/><Column ss:Width="180"/><Column ss:Width="130"/><Column ss:Width="300"/><Column ss:Width="140"/><Column ss:Width="90"/>';
+    sh+=rowx([cell('KEBUTUHAN DATA PSPK — '+ent.name,'sTitle')]);
+    sh+=rowx([cell('Worksheet '+ent.kode+' · '+ent.level+' · '+ent.bidang,'sSub')]);
+    sh+=rowx([cell('Induk: '+ent.parent+' · Kepemilikan: '+ent.pct+'% · Aset: '+fmt(ent.asset)+' Rp miliar','sSub')]);
+    sh+=rowx([cell('')]);
+    sh+=rowx([cell('DAFTAR BUTIR DATA YANG HARUS DISIAPKAN','sH2')]);
+    var hc=[];for(var c2=0;c2<COLS.length;c2++){hc.push(cell(COLS[c2],'sHdr'));}
+    sh+=rowx(hc);
+    for(var r=0;r<rows.length;r++){
+      var x=rows[r],st=x.isEx?'sEx':'sT',cells=[];
+      cells.push(cell(x.isEx?'CONTOH':x.id, x.isEx?'sEx':'sT'));
+      cells.push(cell(x.grp, x.isEx?'sEx':'sGrp'));
+      cells.push(cell(x.item,st));cells.push(cell(x.ref,st));cells.push(cell(x.sat,st));cells.push(cell(x.src,st));
+      for(var v=0;v<4;v++){
+        var col=6+v, val=x.isEx?x.vals[v]:(getV(ent.kode,x.id,col)||'');
+        cells.push(cell(val, x.isEx?'sEx':'sT'));
+      }
+      sh+=rowx(cells);
+    }
+    sh+=rowx([cell('')]);
+    sh+=rowx([cell('PETUNJUK PENGISIAN','sH2')]);
+    for(var p3=0;p3<DATA.petunjuk.length;p3++){sh+=rowx([cell(String(p3+1)),cell(DATA.petunjuk[p3].replace(/<[^>]+>/g,''))]);}
+    sh+=rowx([cell('')]);
+    sh+=rowx([cell('CATATAN KHUSUS ENTITAS INI','sH2')]);
+    sh+=rowx([cell(''),cell(exNote(ent))]);
+    sh+=rowx([cell(''),cell('Baris CONTOH hanyalah illustrasi format — ganti dengan data entitas ini dan hapus barisnya sebelum dijadikan lampiran resmi.')]);
+    sh+='</Table></div></Worksheet>';
+    out+=sh;
+  }
+  out+='</Workbook>';
+  return out;
+}
+function download(name,mime,text){
+  try{
+    var blob=new Blob([text],{type:mime});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(url);a.remove();},800);
+    return true;
+  }catch(e){alert('Unduhan diblokir sandbox: '+e.message);return false;}
+}
+function csvActive(){
+  if(ACTIVE==='idx'){return 'No;Nama Entitas;Level;Induk;Kepemilikan;Aset Rp miliar\n'+DATA.ent.map(function(e){return [e.no,'"'+e.name+'"',e.level,'"'+e.parent+'"',e.pct,e.asset].join(';');}).join('\n');}
+  var ent=null;for(var i=0;i<DATA.ent.length;i++){if(DATA.ent[i].kode===ACTIVE)ent=DATA.ent[i];}
+  if(!ent)return '';
+  var rows=buildRows(ent),lines=[];
+  lines.push('KEBUTUHAN DATA PSPK - '+ent.name);
+  lines.push('Worksheet;'+ent.kode+';Level;'+ent.level+';Aset Rp miliar;'+fmt(ent.asset));
+  lines.push(COLS.map(function(c){return '"'+c+'"';}).join(';'));
+  for(var r=0;r<rows.length;r++){
+    var x=rows[r],arr=[x.isEx?'CONTOH':x.id,x.grp,x.item,x.ref,x.sat,x.src];
+    for(var v=0;v<4;v++){var col=6+v;arr.push(x.isEx?x.vals[v]:(getV(ent.kode,x.id,col)||''));}
+    lines.push(arr.map(function(s){return '"'+String(s).replace(/"/g,'""')+'"';}).join(';'));
+  }
+  lines.push('');lines.push('PETUNJUK PENGISIAN');
+  for(var p=0;p<DATA.petunjuk.length;p++){lines.push((p+1)+';"'+DATA.petunjuk[p].replace(/<[^>]+>/g,'').replace(/"/g,'""')+'"');}
+  lines.push('CATATAN ENTITAS;"'+exNote(ent).replace(/"/g,'""')+'"');
+  return lines.join('\n');
+}
+function collect(){
+  var out={entries:[],meta:{generated:'2026-10-21',active:ACTIVE}};
+  for(var i=0;i<DATA.ent.length;i++){
+    var ent=DATA.ent[i],rows=buildRows(ent);
+    for(var r=0;r<rows.length;r++){
+      var x=rows[r];if(x.isEx)continue;
+      var nilai=getV(ent.kode,x.id,6),ket=getV(ent.kode,x.id,7),pic=getV(ent.kode,x.id,8),stat=getV(ent.kode,x.id,9);
+      if(!nilai&&!ket&&!pic&&!stat)continue;
+      out.entries.push({kode:ent.kode,no:ent.no,item:x.id,butir:x.item,nilai:nilai||'',ket:ket||'',pic:pic||'',status:stat||''});
+    }
+  }
+  return out;
+}
+
+/* ---------- Boot ---------- */
+function boot(){
+  try{
+    var raw=document.getElementById('prova-snapshot').textContent||'{}';
+    DATA=JSON.parse(raw);
+  }catch(e){showErr(e);return;}
+  if(!DATA||!DATA.ent||!DATA.ent.length||!DATA.cat||!DATA.ex){showErr(new Error('Snapshot belum berisi data entitas (key ent/cat/ex).'));return;}
+
+  var ch=document.getElementById('chips');
+  var chips=[DATA.ent.length+' entitas · 1 worksheet per entitas', (DATA.cat.length)+' butir dalam katalog kebutuhan', 'Periode isian: FY2026 · Laporan: FY2027', 'Tahap 1 — WTON & WEGE dikecualikan'];
+  for(var i=0;i<chips.length;i++){var c=el('span','chip'+(i===3?' warn':''),esc(chips[i]));ch.appendChild(c);}
+
+  document.getElementById('btnXls').onclick=function(){
+    if(download('Buku Kerja Kebutuhan Data PSPK 25 Entitas WIKA.xls','application/vnd.ms-excel',xlsAll())){
+      alert('File Excel berisi '+(DATA.ent.length+1)+' worksheet sudah diunduh. Buka di Microsoft Excel, lalu simpan sebagai .xlsx bila diperlukan.');
+    }
+  };
+  document.getElementById('btnCsv').onclick=function(){
+    download((ACTIVE==='idx'?'Daftar-Entitas':ACTIVE)+'.csv','text/csv;charset=utf-8','\ufeff'+csvActive());
+  };
+  document.getElementById('btnSend').onclick=function(){
+    var d=collect();
+    if(window.parent!==window){try{window.parent.postMessage({type:'prova:data',payload:d},'*');}catch(e){}}
+    alert(d.entries.length===0
+      ? 'Belum ada isian untuk dikirim. Isi kolom Nilai / PIC / Status pada worksheet terlebih dahulu.'
+      : d.entries.length+' baris isian dikirim ke chat. Sampaikan pesan ke asisten agar data dibaca lewat html_get_data.');
+  };
+  document.getElementById('btnImp').onclick=function(){document.getElementById('fImp').click();};
+  document.getElementById('fImp').onchange=function(){
+    var f=this.files[0];if(!f)return;
+    var fr=new FileReader();
+    fr.onload=function(){
+      try{
+        var j=JSON.parse(fr.result);
+        var arr=j.entries||j;
+        for(var i=0;i<arr.length;i++){
+          var e=arr[i];
+          setV(e.kode,e.item,6,e.nilai);setV(e.kode,e.item,7,e.ket);setV(e.kode,e.item,8,e.pic);setV(e.kode,e.item,9,e.status);
+        }
+        render();
+      }catch(err){alert('File JSON tidak valid: '+err.message);}
+    };
+    fr.readAsText(f);
+  };
+  document.getElementById('btnPrint').onclick=function(){window.print();};
+  document.getElementById('q').addEventListener('input',function(){render();});
+
+  document.getElementById('foot').innerHTML=DATA.footer||'';
+  render();
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',boot);}else{boot();}
+</script>
+<script id="prova-no-clip">
+(function(){try{
+function openClip(){
+  var sel='.page,.slide,.sheet,.paper,[data-page],.fit-wrap';
+  var ns=document.querySelectorAll(sel);
+  for(var i=0;i<ns.length;i++){try{
+    var el=ns[i],cs=getComputedStyle(el);
+    if(el.scrollHeight>el.clientHeight+2&&(cs.overflowY==='hidden'||cs.overflowY==='clip')){el.style.overflowY='visible';el.style.height='auto';el.style.maxHeight='none';}
+    if(el.scrollWidth>el.clientWidth+2&&(cs.overflowX==='hidden'||cs.overflowX==='clip')){el.style.overflowX='auto';}
+  }catch(e){}}
+}
+/* Reflow mobile: netralkan posisi absolut agar konten menumpuk rapi,
+   bukan saling bertumpuk. Hanya berlaku di lebar <=640px. */
+function unabs(){
+  if((window.innerWidth||0)>640) return;
+  var els=document.querySelectorAll('.page *,.slide *,.sheet *,.paper *,[data-page] *');
+  for(var i=0;i<els.length;i++){try{
+    var cs=getComputedStyle(els[i]);
+    if(cs.position==='absolute'||cs.position==='fixed'){
+      els[i].style.position='static';
+      els[i].style.top='auto';els[i].style.left='auto';els[i].style.right='auto';els[i].style.bottom='auto';
+      els[i].style.transform='none';
+    }
+  }catch(e){}}
+}
+function run(){openClip();unabs();}
+if(document.readyState!=='loading'){run();}else{document.addEventListener('DOMContentLoaded',run);}
+window.addEventListener('resize',run);
+window.addEventListener('load',function(){run();setTimeout(run,400);setTimeout(run,1200);});
+}catch(e){}})();
+</script>
+<!-- PROVA_USERDATA_START -->
+<script id="prova-userdata" type="application/json">{"entries":[],"meta":{"generated":"2026-10-21","active":"07 WIKA Tirta Jatiluhur"}}</script>
+<!-- PROVA_USERDATA_END -->
+</body>
+</html>
